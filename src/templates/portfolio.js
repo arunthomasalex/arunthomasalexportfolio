@@ -1,7 +1,6 @@
-// html skeleton provider
-export default function template(title, content = "") {
-    let scripts = `<script src="/public/main.js" defer> </script>`;
-    let page = `<!DOCTYPE html>
+export default function template(title, content = "", state = {}) {
+  const scripts = `<script src="/public/main.js" defer></script><script>window.__STATE__=${JSON.stringify(state)}</script>`;
+  let page = `<!DOCTYPE html>
                 <html lang="en">
                 <head>
                   <meta charset="utf-8">
@@ -15,7 +14,6 @@ export default function template(title, content = "") {
                   </div>
                 </body>
                 `;
-  
-    return page;
-  }
-  
+
+  return page;
+}

@@ -10,9 +10,13 @@ app.use('/public', express.static(path.resolve(__dirname, 'public')));
 app.disable('x-powered-by');
 app.listen(process.env.PORT || 8888);
 
+const portfolioState = {
+    portfolio: void 0
+}
+
 app.get('/', (req, res) => {
-    const content = render();
-    const response = template("Server side render", content);
+    const { content, preloadedState } = render(portfolioState);
+    const response = template("Arun Thomas Alex", content, preloadedState);
     res.setHeader('Cache-Control', 'pulbic, max-age=604800');
     res.send(response);
 });

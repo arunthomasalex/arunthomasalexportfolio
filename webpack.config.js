@@ -1,4 +1,5 @@
 const path = require('path');
+const RemovePlugin = require('remove-files-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -17,5 +18,27 @@ module.exports = {
                 loader: 'babel-loader'
             }
         ]
-    }
+    },
+    plugins: [
+        new RemovePlugin({
+            before: {
+                root: "./public",
+                test: [
+                    {
+                        folder: '.',
+                        method: (absoluteItemPath) => {
+                            return new RegExp(/(\.css\.map)|(\.css)$/, 'm').test(absoluteItemPath);
+                        }
+                    },
+                    {
+                        folder: '.',
+                        method: (absoluteItemPath) => {
+                            return new RegExp(/(\.js\.map)|(\.js)$/, 'm').test(absoluteItemPath);
+                        },
+                        recursive: true
+                    }
+                ]
+            }
+        })
+    ]
 }
