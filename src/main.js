@@ -11,4 +11,4 @@ delete window.__STATE__;
 
 const store = configureState(state);
 
-hydrate(<Provider store={store}><App/></Provider>, document.querySelector('#app'))
+hydrate(<Provider store={store}><App /></Provider>, document.querySelector('#app'))

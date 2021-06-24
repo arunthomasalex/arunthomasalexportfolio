@@ -15,8 +15,8 @@ const portfolioState = {
 }
 
 app.get('/', (req, res) => {
-    const { content, preloadedState } = render(portfolioState);
-    const response = template("Arun Thomas Alex", content, preloadedState);
+    const { content, state } = render(portfolioState);
+    const response = template("Arun Thomas Alex", content, state);
     res.setHeader('Cache-Control', 'pulbic, max-age=604800');
     res.send(response);
 });

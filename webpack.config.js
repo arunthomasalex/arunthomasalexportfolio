@@ -1,44 +1,37 @@
 const path = require('path');
-const RemovePlugin = require('remove-files-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
+    target: 'node',
+    externals: [nodeExternals()],
     entry: {
-        main: './src/main.js'
+        App: './src/components/app/app.js'
     },
     output: {
-        path: path.resolve(__dirname, 'public'),
-        filename: '[name].js'
+        path: path.resolve(__dirname, './server'),
+        filename: '[name].js',
+        libraryTarget: 'commonjs2'
     },
     module: {
         rules: [
+            { 
+                test: /\.js$/, 
+                exclude: /node_modules/, 
+                loader: 'babel-loader' 
+            },
+            { 
+                test: /\.(scss|css)$/, 
+                loader: 'ignore-loader' 
+            },
             {
-                test: /\.js$/,
-                exclude: /node-modules/,
-                loader: 'babel-loader'
+                test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+                use: 'ignore-loader'
             }
         ]
     },
     plugins: [
-        new RemovePlugin({
-            before: {
-                root: "./public",
-                test: [
-                    {
-                        folder: '.',
-                        method: (absoluteItemPath) => {
-                            return new RegExp(/(\.css\.map)|(\.css)$/, 'm').test(absoluteItemPath);
-                        }
-                    },
-                    {
-                        folder: '.',
-                        method: (absoluteItemPath) => {
-                            return new RegExp(/(\.js\.map)|(\.js)$/, 'm').test(absoluteItemPath);
-                        },
-                        recursive: true
-                    }
-                ]
-            }
-        })
+        new CleanWebpackPlugin()
     ]
 }
