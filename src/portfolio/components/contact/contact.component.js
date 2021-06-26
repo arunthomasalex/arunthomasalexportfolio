@@ -34,12 +34,18 @@ async function validateData(details) {
         for (let index in rules) {
             for (let [key, value] of Object.entries(rules[index])) {
                 validation[key] = value.required && !details[key];
-                let { length, email } = value.validations;
+                let { length, pattern } = value.validations;
                 if (details[key] && length && !validation[key]) {
                     validation[key] = (length.min && (details[key].length < length.min)) || (length.max && details[key] && details[key].length > length.max);
                 }
-                if (email && !validation[key]) {
-                    validation[key] = !/^[a-zA-Z0-9]+@[a-zA-Z0-9]+(\.[A-Za-z]+)+$/.test(details[key]);
+                if (pattern && !validation[key]) {
+                    if(pattern.charAt(0) === '/') {
+                        pattern = pattern.substr(1);
+                    }
+                    if(pattern.charAt(pattern.length - 1) === '/') {
+                        pattern = pattern.substr(0, (pattern.length - 1));
+                    }
+                    validation[key] = !new RegExp(pattern).test(details[key]);
                 }
             }
         }
@@ -67,18 +73,27 @@ function ContactForm() {
         var details = { name, email, subject, message };
         validateData(details).then(validation => {
             if (validation.valid()) {
-                var formBody = new FormData();
-                for(const [key, value] of Object.entries(details)) {
-                    formBody.append(key, value);
+                var formData = [];
+                for (const [key, value] of Object.entries(details)) {
+                    formData.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
                 }
-                axios.post('/message', formBody, {'Content-Type' : 'application/x-www-form-urlencoded'})
+                formData = formData.join('&');
+                axios.post('/message', JSON.stringify(encodeURIComponent(formData)), { 'Content-Type': 'application/x-www-form-urlencoded' })
                     .then(resp => resp.data)
-                    .then(resp => alert(resp.message))
-                    .catch(err => alert("Server unavailable, please Email me or try again later."));
-                setName('');
-                setEmail('');
-                setSubject('');
-                setMessage('');
+                    .then(resp => {
+                        setName('');
+                        setEmail('');
+                        setSubject('');
+                        setMessage('');
+                        alert(resp.message);
+                    })
+                    .catch(resp => {
+                        if (resp.response.status == 400) {
+                            alert(resp.response.data.message);
+                        } else {
+                            alert("Server unavailable, please Email me or try again later.");
+                        }
+                    });
                 setValidation({});
             } else {
                 setValidation(validation);
