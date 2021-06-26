@@ -1,7 +1,7 @@
 'use strict';
 
 import portfolioConstant from "./portfolio.constant";
-import { portfolioEvents } from '../events';
+import { portfolioEvents } from '../../events';
 
 export function portfolioReducer(state = {}, action) {
     portfolioEvents.trigger(action.type, action);

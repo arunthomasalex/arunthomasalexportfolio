@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { portfolioEventNames, portfolioEvents } from '../../events';
-import { PortfolioContext } from '../../helpers';
+import { portfolioEventNames, portfolioEvents } from '../../../events';
+import { PortfolioContext } from '../../../helpers';
 import { portfolioAction, portfolioConstant } from '../../redux';
 import { Home } from '../home';
 import { About } from '../about';

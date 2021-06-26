@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withPortfolioContext } from "../../helpers";
+import { withPortfolioContext } from "../../../helpers";
 import './home.scss';
 
 class HomeComponent extends Component {

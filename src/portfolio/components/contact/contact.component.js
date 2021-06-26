@@ -2,7 +2,7 @@
 
 import React, { Component, useState } from 'react';
 import axios from 'axios';
-import { withPortfolioContext } from '../../helpers';
+import { withPortfolioContext } from '../../../helpers';
 import './contact.scss';
 
 function Contacts(props) {

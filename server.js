@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
-import render from './src/ssr';
-import template from './src/templates/portfolio';
+import { renderPortfolio, renderResume } from './src/ssr';
+import portfolioTemplate from './src/templates/portfolio';
+import resumeTemplate from './src/templates/resume';
 
 const app = express();
 app.use('/public', express.static(path.resolve(__dirname, 'public')));
@@ -10,13 +11,20 @@ app.use('/public', express.static(path.resolve(__dirname, 'public')));
 app.disable('x-powered-by');
 app.listen(process.env.PORT || 8888);
 
-const portfolioState = {
+const initialState = {
     portfolio: void 0
 }
 
 app.get('/', (req, res) => {
-    const { content, state } = render(portfolioState);
-    const response = template("Arun Thomas Alex", content, state);
+    const { content, state } = renderPortfolio(initialState);
+    const response = portfolioTemplate("Arun Thomas Alex", content, state);
+    res.setHeader('Cache-Control', 'pulbic, max-age=604800');
+    res.send(response);
+});
+
+app.get('/resume', (req, res) => {
+    const { content, state } = renderResume(initialState);
+    const response = resumeTemplate("Arun Thomas Alex", content, state);
     res.setHeader('Cache-Control', 'pulbic, max-age=604800');
     res.send(response);
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { createDatas, prepareString, withPortfolioContext } from '../../helpers';
+import { createDatas, prepareString, withPortfolioContext } from '../../../helpers';
 import './commonsprite.png';
 import './socialmedia.png';
 import './about.scss';

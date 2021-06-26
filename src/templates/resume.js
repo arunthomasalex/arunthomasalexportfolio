@@ -4,9 +4,9 @@ export default function template(title, content = "", state = {}) {
   let resources = `<script>window.__STATE__=${JSON.stringify(state)}</script>`;
   const files = fs.readdirSync('./public');
   resources += files.map(file => {
-    if (file.startsWith('portfolio') && file.endsWith('.js')) {
+    if (file.startsWith('resume') && file.endsWith('.js')) {
       return `<script src="/public/${file}" defer></script>`
-    } else if (file.startsWith('portfolio') && file.endsWith('.css')) {
+    } else if (file.startsWith('resume') && file.endsWith('.css')) {
       return `<link rel="stylesheet" type="text/css" href="/public/${file}">`
     }
   }).join('');

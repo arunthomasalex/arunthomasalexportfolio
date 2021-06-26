@@ -7,7 +7,8 @@ module.exports = {
     target: 'node',
     externals: [nodeExternals()],
     entry: {
-        App: './src/components/app/app.js'
+        PortfolioApp: path.join(__dirname, 'src', 'portfolio', 'components', 'app', 'app.js'),
+        ResumeApp: path.join(__dirname, 'src', 'resume', 'components', 'app', 'app.js')
     },
     output: {
         path: path.resolve(__dirname, './server'),
